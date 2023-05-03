@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import * as React from 'react';
 import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from '../constanst';
-import { type FromLanguage, type Language, SectorType } from '../types.d';
+import { type FromLanguage, type Language } from '../types';
 
 // interface Props {
 // onChange: (language: string) => void

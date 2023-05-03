@@ -1,48 +1,87 @@
 import * as React from 'react';
-import GetItem from './GetItem';
 import { useStore } from './hooks/useStore';
-import { Container, Col, Row, Button } from 'react-bootstrap';
+import {
+  Container,
+  Col,
+  Row,
+  Button,
+  Form,
+  Stack,
+  FormText,
+} from 'react-bootstrap';
 import './style.css';
 import { ArrowIcon } from './components/Icon';
 import { LanguageSelector } from './components/LanguageSelector';
-import { SectorType } from './types.d';
+import { TextArea } from './components/TextArea';
+import { translate } from './service/translate';
+import { useEffect } from 'react';
 
-export default function App() {
+function App() {
   const {
     setFromLanguage,
     fromLanguage,
     toLanguage,
-    setFromText,
     setLanguage,
+    setFromText,
+    fromText,
     interchangeLanguage,
+    setResult,
+    result,
   } = useStore();
-  console.log({ fromLanguage });
+
+  useEffect(() => {
+    if (fromText === '') return;
+    translate({ fromLanguage, toLanguage, text: fromText })
+      .then((result) => {
+        if (result === null) return;
+        setResult(result);
+      })
+      .catch((error) => setResult(error));
+  }, [fromText]);
   return (
     <Container fluid>
       <h2>Google translate</h2>
       <Row>
         <Col>
-          <LanguageSelector
-            onChange={setFromLanguage}
-            type="from"
-            value={fromLanguage}
-          />
-          {fromLanguage}
+          <Stack gap={2}>
+            <LanguageSelector
+              onChange={setFromLanguage}
+              type="from"
+              value={fromLanguage}
+            />
+            <TextArea
+              placeholder="Introducir texto"
+              autoFocus
+              type="from"
+              value={fromText}
+              onChange={setFromText}
+            />
+          </Stack>
         </Col>
-        <Col>
+        <Col xs={'auto'}>
           <Button variant="dark" onClick={() => interchangeLanguage()}>
             <ArrowIcon />
           </Button>
         </Col>
         <Col>
-          <LanguageSelector
-            onChange={setLanguage}
-            type="to"
-            value={toLanguage}
-          />
-          {toLanguage}
+          <Stack gap={2}>
+            <LanguageSelector
+              onChange={setLanguage}
+              type="to"
+              value={toLanguage}
+            />
+            <TextArea
+              placeholder="Traducción"
+              autoFocus
+              type="to"
+              value={result}
+              onChange={setResult}
+            />
+          </Stack>
         </Col>
       </Row>
     </Container>
   );
 }
+
+export default App;

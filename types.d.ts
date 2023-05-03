@@ -1,4 +1,4 @@
-import { type AUTO_LANGUAGE, type SUPPORTED_LANGUAGES } from './constanst';
+import { AUTO_LANGUAGE, SUPPORTED_LANGUAGES } from './constanst';
 
 //capturo las key de el type supported_languages asi se sincronizan;
 export type Language = keyof typeof SUPPORTED_LANGUAGES;
